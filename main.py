@@ -112,7 +112,6 @@ def get_new_centroids(list_of_clusters):
         averages.clear()
 
 
-
 def plot_final_graph(list_of_clusters, list_of_centroids):
     for i in range(k):
         for x in range(len(list_of_clusters[i])):
@@ -121,7 +120,6 @@ def plot_final_graph(list_of_clusters, list_of_centroids):
 
     plt.title("Final Graph")
     plt.show()
-
 
 
 while not centroids_are_the_same:
@@ -156,3 +154,8 @@ for i in range(len(clusters)):
 
 # Plot final clusters and centroids
 plot_final_graph(clusters, centroids)
+
+
+
+def getDunnIndex():
+    print("Dunn Index: ")
