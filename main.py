@@ -70,8 +70,6 @@ plt.show()
 
 
 
-
-
 # Calculate the euclidean distance between each point and the centroids
 
 def euclidean_distance(point):
@@ -128,6 +126,9 @@ def plot_final_graph(list_of_clusters, list_of_centroids):
     plt.show()
 
 
+
+clusters = []
+
 while not centroids_are_the_same:
     # Create list of lists of clusters, same amount as k
     clusters = [[] for i in range(k)]
@@ -177,6 +178,7 @@ plot_final_graph(clusters, centroids)
 # THEN THE SECOND WITH THE ONE AFTER THAT
 # WHEN IT GETS TO THE LAST ELEMENT IN THE LIST (THE LAST CENTROID), DON'T DO ANYTHING,
 # AS ALL DISTANCES HAVE BEEN CHECKED
+
 def min_separation():
     # More than one cluster
     if len(centroids) > 1:
@@ -198,25 +200,33 @@ def min_separation():
 
 
 # Between points in the same cluster
+# Same as the min_separation
+# Do the euclidean distance between all points in each cluster
+# So loop k amount of times, and in the while loop do the same functionality
+# (It will just do way more iterations )
+# clusters is a list with each cluster in it
+# and each cluster is a list with all the different data points
+
 def max_compactness():
-    print("0")
-
-
+    max_distance = 0
+    for i in range(k):
+        j = 0
+        while j != (len(clusters[i]) - 1):
+            dist = np.sqrt((clusters[i][j][0] - clusters[i][j + 1][0]) ** 2 + (clusters[i][j][1] - clusters[i][j + 1][1]) ** 2)
+            if dist > max_distance:
+                max_distance = dist
+            j += 1
+    print(max_distance)
+    return max_distance
 
 
 def getDunnIndex():
-    # DELETE THESE PRINT STATEMENTS
-    print("--------------------------------")
-    print("Dunn Index Calculations Started")
-    print("--------------------------------")
-    # Calculate euclidean distance of centroids to all other centroids
-    # Keep the minimum distance
+    print("Dunn Index:")
+    dunn_index = min_separation() / max_compactness()
+    print(dunn_index)
 
 
-min_separation()
-
-
-
+getDunnIndex()
 
 
 # DUN INDEX:
