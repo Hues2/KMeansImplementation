@@ -40,6 +40,10 @@ centroids_are_the_same = False
 # List of centroids
 centroids = []
 
+def printCentroids():
+    for i in range(k):
+        print(f'Centroid {i}: {centroids[i]}')
+
 # List of colours (max 5)
 list_of_colours_centroids = ['darkblue', 'black', 'purple', 'darkred', 'darkgreen']
 list_of_colours_points = ['cornflowerblue', 'gray', 'violet', 'red', 'mediumseagreen']
@@ -53,8 +57,8 @@ for i in range(k):
 
 
 # These are the randomly selected centroids
-for i in range(k):
-    print(f'Centroid {i}: {centroids[i]}')
+print("Initial Random Centroids:")
+printCentroids()
 
 
 # Plot the graph with the random centroids
@@ -63,6 +67,8 @@ for i in range(k):
     plt.scatter(centroids[i][0], centroids[i][1], c='red')
 plt.title("Initial graph with random centroids")
 plt.show()
+
+
 
 
 
@@ -152,10 +158,68 @@ print("Final size of each cluster:")
 for i in range(len(clusters)):
     print(f"Size of cluster {i} : {len(clusters[i])}")
 
+# Final Centroids:
+print("Final Centroids")
+printCentroids()
+
+
 # Plot final clusters and centroids
 plot_final_graph(clusters, centroids)
 
 
 
+
+# Between Centroids in different clusters
+# (I have a list of all centroids, so it's easy to get the distance between them all)
+# Using the list of centroids --> centroids
+# EXAMPLE --> THERE ARE 3 CLUSTERS,
+# I CHECK THE DISTANCE BETWEEN THE FIRST CLUSTER WITH ALL OTHERS AFTER IT IN THE LIST
+# THEN THE SECOND WITH THE ONE AFTER THAT
+# WHEN IT GETS TO THE LAST ELEMENT IN THE LIST (THE LAST CENTROID), DON'T DO ANYTHING,
+# AS ALL DISTANCES HAVE BEEN CHECKED
+def min_separation():
+    # More than one cluster
+    if len(centroids) > 1:
+        min_distance = np.sqrt((centroids[0][0] - centroids[1][0]) ** 2 + (centroids[0][1] - centroids[1][1]) ** 2)
+        for i in range(k):
+            j = i + 1
+            while j != k:
+                dist = np.sqrt((centroids[i][0] - centroids[j][0]) ** 2 + (centroids[i][1] - centroids[j][1]) ** 2)
+                print(dist)
+                if dist < min_distance:
+                    min_distance = dist
+                j += 1
+    # Only one cluster, the distance will be 0
+    else:
+        min_distance = 0
+
+    print(min_distance)
+    return min_distance
+
+
+# Between points in the same cluster
+def max_compactness():
+    print("0")
+
+
+
+
 def getDunnIndex():
-    print("Dunn Index: ")
+    # DELETE THESE PRINT STATEMENTS
+    print("--------------------------------")
+    print("Dunn Index Calculations Started")
+    print("--------------------------------")
+    # Calculate euclidean distance of centroids to all other centroids
+    # Keep the minimum distance
+
+
+min_separation()
+
+
+
+
+
+# DUN INDEX:
+
+# Smallest euclidean distance between the centroids distances
+# Biggest euclidean distance between 2 points in a cluster
