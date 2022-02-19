@@ -3,6 +3,8 @@ import pandas as pd
 import random
 import matplotlib.pyplot as plt
 import numpy as np
+from dunnIndex import DunnIndex
+
 
 # Get the data from the csv file
 dataset = pd.read_csv('loan_data_set.csv')
@@ -40,6 +42,9 @@ centroids_are_the_same = False
 # List of centroids
 centroids = []
 
+# List of centroids
+clusters = []
+
 def printCentroids():
     for i in range(k):
         print(f'Centroid {i}: {centroids[i]}')
@@ -73,15 +78,6 @@ plt.show()
 # Calculate the euclidean distance between each point and the centroids
 
 def euclidean_distance(point):
-    # Loop through all the centroids
-    # Measure the distance from each centroid from the point in each iteration
-    # Add the distances to a list in order
-    # Identify the smallest distance
-    # Get the index of that smallest number
-    # That index will indicate what centroid to return.
-    # Return it with the f string
-    # return (f"c{index}"
-
     distances = []
     for i in range(k):
         dist = np.sqrt((centroids[i][0] - point[0]) ** 2 + (centroids[i][1] - point[1]) ** 2)
@@ -127,8 +123,6 @@ def plot_final_graph(list_of_clusters, list_of_centroids):
 
 
 
-clusters = []
-
 while not centroids_are_the_same:
     # Create list of lists of clusters, same amount as k
     clusters = [[] for i in range(k)]
@@ -151,8 +145,6 @@ while not centroids_are_the_same:
             centroids_are_the_same = True
     centroids = new_centroids
 
-    # Repeat these steps until the centroids don't change
-
 
 # Final size of the clusters
 print("Final size of each cluster:")
@@ -167,69 +159,8 @@ printCentroids()
 # Plot final clusters and centroids
 plot_final_graph(clusters, centroids)
 
+# Get the Dunn Index
+dunn_index = DunnIndex(centroids, clusters, k)
+dunn_index.getDunnIndex()
 
 
-
-# Between Centroids in different clusters
-# (I have a list of all centroids, so it's easy to get the distance between them all)
-# Using the list of centroids --> centroids
-# EXAMPLE --> THERE ARE 3 CLUSTERS,
-# I CHECK THE DISTANCE BETWEEN THE FIRST CLUSTER WITH ALL OTHERS AFTER IT IN THE LIST
-# THEN THE SECOND WITH THE ONE AFTER THAT
-# WHEN IT GETS TO THE LAST ELEMENT IN THE LIST (THE LAST CENTROID), DON'T DO ANYTHING,
-# AS ALL DISTANCES HAVE BEEN CHECKED
-
-def min_separation():
-    # More than one cluster
-    if len(centroids) > 1:
-        min_distance = np.sqrt((centroids[0][0] - centroids[1][0]) ** 2 + (centroids[0][1] - centroids[1][1]) ** 2)
-        for i in range(k):
-            j = i + 1
-            while j != k:
-                dist = np.sqrt((centroids[i][0] - centroids[j][0]) ** 2 + (centroids[i][1] - centroids[j][1]) ** 2)
-                print(dist)
-                if dist < min_distance:
-                    min_distance = dist
-                j += 1
-    # Only one cluster, the distance will be 0
-    else:
-        min_distance = 0
-
-    print(min_distance)
-    return min_distance
-
-
-# Between points in the same cluster
-# Same as the min_separation
-# Do the euclidean distance between all points in each cluster
-# So loop k amount of times, and in the while loop do the same functionality
-# (It will just do way more iterations )
-# clusters is a list with each cluster in it
-# and each cluster is a list with all the different data points
-
-def max_compactness():
-    max_distance = 0
-    for i in range(k):
-        j = 0
-        while j != (len(clusters[i]) - 1):
-            dist = np.sqrt((clusters[i][j][0] - clusters[i][j + 1][0]) ** 2 + (clusters[i][j][1] - clusters[i][j + 1][1]) ** 2)
-            if dist > max_distance:
-                max_distance = dist
-            j += 1
-    print(max_distance)
-    return max_distance
-
-
-def getDunnIndex():
-    print("Dunn Index:")
-    dunn_index = min_separation() / max_compactness()
-    print(dunn_index)
-
-
-getDunnIndex()
-
-
-# DUN INDEX:
-
-# Smallest euclidean distance between the centroids distances
-# Biggest euclidean distance between 2 points in a cluster
