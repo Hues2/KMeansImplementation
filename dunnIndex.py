@@ -19,7 +19,6 @@ class DunnIndex:
                 j = i + 1
                 while j != self.k:
                     dist = np.sqrt((self.centroids[i][0] - self.centroids[j][0]) ** 2 + (self.centroids[i][1] - self.centroids[j][1]) ** 2)
-                    print(dist)
                     if dist < min_distance:
                         min_distance = dist
                     j += 1
@@ -27,7 +26,6 @@ class DunnIndex:
         else:
             min_distance = 0
 
-        print(min_distance)
         return min_distance
 
     def max_compactness(self):
@@ -40,7 +38,6 @@ class DunnIndex:
                 if dist > max_distance:
                     max_distance = dist
                 j += 1
-        print(max_distance)
         return max_distance
 
     def getDunnIndex(self):
